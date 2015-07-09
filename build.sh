@@ -13,7 +13,7 @@ taskArn=$(aws ecs run-task --task-definition ${BUILDER_TASK_DEFINITION} --overri
 \"containerOverrides\": \
   [ \
     { \
-    \"name\":\"build_java_example\", \
+    \"name\":\"build_container\", \
     \"environment\": \
       [ \
 	{ \
