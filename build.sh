@@ -1,5 +1,5 @@
 #!/bin/bash
-cd ${REPO_HOME-/clone}
+cd ${REPO_HOME-~/clone}
 git_repo_url=`git remote -v | grep fetch | grep -o -P 'git@.*?(?=\s)'`
 https_repo_url=`git remote -v | grep fetch | grep -o -P 'https://.*?(?=\s)'`
 if [ $https_repo_url ]
