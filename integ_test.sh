@@ -5,7 +5,7 @@ taskArn=$(aws ecs run-task --task-definition ${TEST_TASK_DEFINITION} --overrides
 \"containerOverrides\": \
   [ \
     { \
-    \"name\":\"build_container\", \
+    \"name\":\"tests\", \
     \"environment\": \
       [ \
 	{ \
