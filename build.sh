@@ -8,7 +8,7 @@ if [ $https_repo_url ]
   else
     REPO_URL=`echo $git_repo_url | sed 's/:/\//g' | sed 's/^git@/https:\/\//'` 
 fi
-taskArn=$(aws ecs run-task --task-definition ${BUILDER_TASK_DEFINITION} --overrides \
+taskArn=$(aws ecs run-task --cluster ${ECS_CLUSTER:-default} --task-definition ${BUILDER_TASK_DEFINITION} --overrides \
 "{ \
 \"containerOverrides\": \
   [ \
@@ -28,7 +28,7 @@ taskArn=$(aws ecs run-task --task-definition ${BUILDER_TASK_DEFINITION} --overri
     } \
   ] \
 }" | python -c "import sys, json; print json.load(sys.stdin)['tasks'][0]['taskArn']")
-aws ecs wait tasks-stopped --tasks $taskArn
-aws ecs describe-tasks --task $taskArn
-_() { return $(aws ecs describe-tasks --task $taskArn | python -c "import sys, json; print json.load(sys.stdin)['tasks'][0]['containers'][0]['exitCode']"); }
+aws ecs wait tasks-stopped --cluster ${ECS_CLUSTER:-default} --tasks $taskArn
+aws ecs describe-tasks --cluster ${ECS_CLUSTER:-default} --task $taskArn
+_() { return $(aws ecs describe-tasks --cluster ${ECS_CLUSTER:-default} --task $taskArn | python -c "import sys, json; print json.load(sys.stdin)['tasks'][0]['containers'][0]['exitCode']"); }
 _
