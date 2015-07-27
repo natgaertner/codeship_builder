@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+set -o pipefail
 SERVICE_NAME=$1
 ECS_CLUSTER=$2
 SERVICE_TASK_DEFINITION=$(aws ecs describe-services  --cluster ${ECS_CLUSTER:-default} --service ${SERVICE_NAME} | python -c 'import sys, re, json; print re.match(r"arn:aws:ecs:.*:\d+:task-definition/(?P<task_name>.*):\d+",json.load(sys.stdin)["services"][0]["taskDefinition"]).group("task_name")')
