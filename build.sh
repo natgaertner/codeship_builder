@@ -1,4 +1,5 @@
 #!/bin/bash
+TEST_COMMAND=$1
 cd ${REPO_HOME-~/clone}
 git_repo_url=`git remote -v | grep fetch | grep -o -P 'git@.*?(?=\s)'`
 https_repo_url=`git remote -v | grep fetch | grep -o -P 'https://.*?(?=\s)'`
@@ -19,6 +20,10 @@ taskArn=$(aws ecs run-task --cluster ${ECS_CLUSTER:-default} --task-definition $
 	{ \
 	\"name\": \"GIT_REPO_URL\", \
 	\"value\":\"$REPO_URL\" \
+	}, \
+	{ \
+	\"name\": \"TEST_COMMAND\", \
+	\"value\":\"$TEST_COMMAND\" \
 	}, \
 	{ \
 	\"name\": \"DOCKER_REPO_NAME\", \
