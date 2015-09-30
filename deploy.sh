@@ -11,5 +11,5 @@ aws ecs register-task-definition --cli-input-json file://tmp.json
 rm tmp.json
 echo 'updating service'
 aws ecs update-service --cluster ${ECS_CLUSTER:-default} --service ${SERVICE_NAME} --task-definition ${SERVICE_TASK_DEFINITION}
-echo 'waiting for service to stabilize'
+echo "waiting for service ${SERVICE_NAME} to stabilize on cluster ${ECS_CLUSTER:-default}"
 aws ecs wait services-stable --cluster ${ECS_CLUSTER:-default} --service ${SERVICE_NAME}

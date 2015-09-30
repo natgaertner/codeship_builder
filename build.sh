@@ -1,14 +1,19 @@
 #!/bin/bash
 TEST_COMMAND=$1
 cd ${REPO_HOME-~/clone}
-git_repo_url=`git remote -v | grep fetch | grep -o -P 'git@.*?(?=\s)'`
-https_repo_url=`git remote -v | grep fetch | grep -o -P 'https://.*?(?=\s)'`
-if [ $https_repo_url ]
+git_repo_url=`git remote -v | grep fetch | grep origin | grep -o -P 'git@.*?(?=\s)'`
+https_repo_url=`git remote -v | grep fetch | grep origin | grep -o -P 'https://.*?(?=\s)'`
+if [ $git_repo_url ]
   then
-    REPO_URL=$https_repo_url
+    #convert to https from git
+    #REPO_URL=`echo $git_repo_url | sed 's/:/\//g' | sed 's/^git@/https:\/\//'` 
+    REPO_URL=$git_repo_url
   else
-    REPO_URL=`echo $git_repo_url | sed 's/:/\//g' | sed 's/^git@/https:\/\//'` 
+    #convert to git from https
+    REPO_URL=`echo $https_repo_url | sed 's/https:\/\//git@/g' | sed 's/github\.com\//github.com:/g'`
+
 fi
+echo $REPO_URL
 taskArn=$(aws ecs run-task --cluster ${ECS_CLUSTER:-default} --task-definition ${BUILDER_TASK_DEFINITION} --overrides \
 "{ \
 \"containerOverrides\": \
