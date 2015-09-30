@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 set -o pipefail
+source get_resource.sh
 
 CF_DEPLOY_CLUSTER_STACK=${CF_DEPLOY_CLUSTER_STACK:-$CF_DEPLOY_STACK}
 
