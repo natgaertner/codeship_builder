@@ -15,7 +15,7 @@ echo "ECS_CLUSTER: $ECS_CLUSTER"
 
 if [ $CF_DEPLOY_STACK -a $LOGICAL_SERVICE_NAME ]
 then
-  SERVICE_NAME=`get_resource $CF_BUILD_STACK $LOGICAL_SERVICE_NAME | grep -Po '(?<=service/).+'`
+  SERVICE_NAME=`get_resource $CF_DEPLOY_STACK $LOGICAL_SERVICE_NAME | grep -Po '(?<=service/).+'`
 else
   SERVICE_NAME=$2
 fi
