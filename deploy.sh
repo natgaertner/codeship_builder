@@ -21,7 +21,7 @@ else
 fi
 echo "SERVICE_NAME: $SERVICE_NAME"
 
-SERVICE_TASK_DEFINITION=`aws ecs describe-services --cluster $ECS_CLUSTER --service $SERVICE_NAME | jq -r .services[0].taskDefinition | grep -Po '(?<=task-definition/).+'`
+SERVICE_TASK_DEFINITION=`aws ecs describe-services --cluster $ECS_CLUSTER --service $SERVICE_NAME | jq -r .services[0].taskDefinition | grep -Po '(?<=task-definition/).+(?=:\d+)'`
 echo "SERVICE_TASK_DEFINITION: $SERVICE_TASK_DEFINITION"
 
 aws ecs describe-task-definition --task-definition ${SERVICE_TASK_DEFINITION} | python -c "import sys,json; d = json.load(sys.stdin)['taskDefinition']; d.pop('status');d.pop('taskDefinitionArn');d.pop('revision');print json.dumps(d)" > tmp.json
